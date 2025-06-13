@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A fun birthday countdown with animated balloons and a loving message!" />
+  <meta name="keywords" content="birthday, countdown, celebration" />
+  <meta name="author" content="Your Name" />
+  <title>Birthday Countdown</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fce4ec; /* light pink */
+      font-family: 'Comic Sans MS', 'Arial', sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: clamp(2em, 5vw, 3.5em);
+      color: #d81b60;
+      margin-top: 30px;
+      text-shadow: 2px 2px #fff;
+      animation: pulse 2s infinite;
+      z-index: 10;
+      position: relative;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    #countdown {
+      font-size: clamp(2em, 10vw, 4em);
+      text-align: center;
+      color: #3f0071; /* Improved contrast */
+      font-weight: bold;
+      margin-top: 80px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .balloon {
+      position: absolute;
+      width: clamp(40px, 8vw, 60px);
+      height: clamp(60px, 12vw, 80px);
+      background: red;
+      border-radius: 60% 60% 60% 60%;
+      animation: float 12s linear infinite;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    .balloon::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 30px;
+      background: #444;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-150vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>love u bhut jyada 💕</h1>
+  <div id="countdown" role="timer" aria-live="polite"></div>
+
+  <script>
+    // Set target date to the next August 10th
+    const now = new Date();
+    let year = now.getFullYear();
+    if (now > new Date(`August 10, ${year} 00:00:00`)) {
+      year++; // Move to next year if birthday has passed
+    }
+    const targetDate = new Date(`August 10, ${year} 00:00:00`).getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      let distance = targetDate - now;
+
+      if (distance < 0) {
+        document.getElementById("countdown").innerHTML = "🎂 Happy Birthday! 🎉";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML =
+        `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Create big, colorful balloons
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.classList.add("balloon");
+      balloon.style.left = Math.random() * 100 + "vw";
+      const duration = 8 + Math.random() * 6; // Random duration between 8-14s
+      balloon.style.animationDuration = `${duration}s`;
+      balloon.style.background = `radial-gradient(circle at 30% 30%, hsl(${Math.random()*360}, 100%, 75%), hsl(${Math.random()*360}, 100%, 50%))`;
+      document.body.appendChild(balloon);
+
+      setTimeout(() => balloon.remove(), duration * 1000); // Match removal to animation duration
+    }
+
+    setInterval(createBalloon, 500);
+  </script>
+</body>
+</html>
